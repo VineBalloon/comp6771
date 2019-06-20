@@ -1,0 +1,1 @@
+/bin/c++  -g   CMakeFiles/wl.dir/lexicon.cpp.o CMakeFiles/wl.dir/main.cpp.o CMakeFiles/wl.dir/word_ladder.cpp.o CMakeFiles/wl.dir/word_ladder_test.cpp.o  -o wl 
