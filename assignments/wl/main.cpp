@@ -41,6 +41,7 @@ int main() {
   }
    */
 
+  std::cout << "Found ladder: ";
   auto ladders = WordLadder(start, dest, lexicon);
   for (const auto& ladder : ladders) {
     for (const auto& word : ladder) {
