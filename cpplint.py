@@ -50,8 +50,13 @@ import re
 import sre_compile
 import string
 import sys
-import unicodedata
 import sysconfig
+import unicodedata
+
+if sys.version_info[0] != 2:
+    sys.stderr.write("cpplint.py needs to be run with Python 2, try running "
+                     "'python2 %s' instead\n" % sys.argv[0])
+    sys.exit(1)
 
 try:
   xrange          # Python 2
@@ -4229,19 +4234,19 @@ def CheckCheck(filename, clean_lines, linenum, error):
   lhs = lhs.strip()
   rhs = rhs.strip()
   match_constant = r'^([-+]?(\d+|0[xX][0-9a-fA-F]+)[lLuU]{0,3}|".*"|\'.*\')$'
-  if Match(match_constant, lhs) or Match(match_constant, rhs):
-    # Note: since we know both lhs and rhs, we can provide a more
-    # descriptive error message like:
-    #   Consider using CHECK_EQ(x, 42) instead of CHECK(x == 42)
-    # Instead of:
-    #   Consider using CHECK_EQ instead of CHECK(a == b)
-    #
-    # We are still keeping the less descriptive message because if lhs
-    # or rhs gets long, the error message might become unreadable.
-    error(filename, linenum, 'readability/check', 2,
-          'Consider using %s instead of %s(a %s b)' % (
-              _CHECK_REPLACEMENT[check_macro][operator],
-              check_macro, operator))
+  # if Match(match_constant, lhs) or Match(match_constant, rhs):
+  #   # Note: since we know both lhs and rhs, we can provide a more
+  #   # descriptive error message like:
+  #   #   Consider using CHECK_EQ(x, 42) instead of CHECK(x == 42)
+  #   # Instead of:
+  #   #   Consider using CHECK_EQ instead of CHECK(a == b)
+  #   #
+  #   # We are still keeping the less descriptive message because if lhs
+  #   # or rhs gets long, the error message might become unreadable.
+  #   error(filename, linenum, 'readability/check', 2,
+  #         'Consider using %s instead of %s(a %s b)' % (
+  #             _CHECK_REPLACEMENT[check_macro][operator],
+  #             check_macro, operator))
 
 
 def CheckAltTokens(filename, clean_lines, linenum, error):
@@ -4492,10 +4497,7 @@ def _ClassifyInclude(fileinfo, include, is_system):
   is_cpp_h = include in _CPP_HEADERS
 
   if is_system:
-    if is_cpp_h:
-      return _CPP_SYS_HEADER
-    else:
-      return _C_SYS_HEADER
+    return _CPP_SYS_HEADER
 
   # If the target file and the include we're checking share a
   # basename when we drop common extensions, and the include
@@ -5809,7 +5811,7 @@ def ProcessLine(filename, file_extension, clean_lines, line,
   CheckStyle(filename, clean_lines, line, file_extension, nesting_state, error)
   CheckLanguage(filename, clean_lines, line, file_extension, include_state,
                 nesting_state, error)
-  CheckForNonConstReference(filename, clean_lines, line, nesting_state, error)
+  # CheckForNonConstReference(filename, clean_lines, line, nesting_state, error)
   CheckForNonStandardConstructs(filename, clean_lines, line,
                                 nesting_state, error)
   CheckVlogArguments(filename, clean_lines, line, error)
@@ -5928,7 +5930,7 @@ def ProcessFileData(filename, file_extension, lines, error,
     ProcessLine(filename, file_extension, clean_lines, line,
                 include_state, function_state, nesting_state, error,
                 extra_check_functions)
-    FlagCxx11Features(filename, clean_lines, line, error)
+    # FlagCxx11Features(filename, clean_lines, line, error)
   nesting_state.CheckCompletedBlocks(filename, error)
 
   CheckForIncludeWhatYouUse(filename, clean_lines, include_state, error)

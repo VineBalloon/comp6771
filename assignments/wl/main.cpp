@@ -8,6 +8,7 @@
 #include "assignments/wl/word_ladder.h"
 
 int main() {
+<<<<<<< HEAD
   std::string start, dest;
 
   std::cout << "Enter start word (RETURN to quit): ";
@@ -27,6 +28,9 @@ int main() {
   /*
   auto lexicon = GetLexicon("data/words.txt");
    */
+=======
+  auto lexicon = GetLexicon("assignments/wl/words.txt");
+>>>>>>> ccea7138d5ab46b24ebe323bfc80738be31c3ae4
 
   // cut down lexicon to strings of correct size and put in unordered_set
   const std::string::size_type strlen = start.size();

@@ -1,4 +1,5 @@
 /*
+<<<<<<< HEAD
  * Testing Methodology:
  * - Unit test
  *  - Make simple tests
@@ -6,6 +7,17 @@
  *  - Test intended behaviour
  */
 #include "assignments/wl/lexicon.h"
+=======
+
+  == Explanation and rational of testing ==
+
+  Explain and justify how you approached testing, the degree
+   to which you're certain you have covered all possibilities,
+   and why you think your tests are that thorough.
+
+*/
+
+>>>>>>> ccea7138d5ab46b24ebe323bfc80738be31c3ae4
 #include "assignments/wl/word_ladder.h"
 #include "catch.h"
 
