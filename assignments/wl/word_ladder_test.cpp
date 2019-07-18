@@ -1,5 +1,4 @@
 /*
-<<<<<<< HEAD
  * Testing Methodology:
  * - Unit test
  *  - Make simple tests
@@ -7,22 +6,12 @@
  *  - Test intended behaviour
  */
 #include "assignments/wl/lexicon.h"
-=======
-
-  == Explanation and rational of testing ==
-
-  Explain and justify how you approached testing, the degree
-   to which you're certain you have covered all possibilities,
-   and why you think your tests are that thorough.
-
-*/
-
->>>>>>> ccea7138d5ab46b24ebe323bfc80738be31c3ae4
 #include "assignments/wl/word_ladder.h"
 #include "catch.h"
 
 // SetInLexicon checks if all elements of the neighbours set are in
-bool SetInLexicon(const std::set<std::string>& lexicon, const std::set<std::string>& neighbours) {
+bool SetInLexicon(const std::unordered_set<std::string>& lexicon,
+                  std::set<std::string>& neighbours) {
   for (const auto& item : neighbours) {
     if (lexicon.find(item) == lexicon.end())
       return false;
@@ -31,7 +20,7 @@ bool SetInLexicon(const std::set<std::string>& lexicon, const std::set<std::stri
 }
 
 // SetInLexicon overloaded to handle set of ladders
-bool SetInLexicon(const std::set<std::string>& lexicon,
+bool SetInLexicon(const std::unordered_set<std::string>& lexicon,
                   const std::set<std::vector<std::string>>& ladders) {
   for (const auto& ladder : ladders) {
     for (const auto& item : ladder) {
@@ -55,17 +44,21 @@ bool LaddersSameSize(const std::set<std::vector<std::string>>& ladders) {
 
 SCENARIO("GetNeighbours returns valid members of the lexicon", "[GetNeighbours]") {
   GIVEN("A small lexicon with words that have and don't have neighbours") {
-    auto lexicon = std::set<std::string>{"cat", "cot", "rat", "can", "con", "dog", "zzz"};
+    auto lexicon = std::unordered_set<std::string>{
+        static_cast<std::string>("cat"), static_cast<std::string>("cot"),
+        static_cast<std::string>("rat"), static_cast<std::string>("can"),
+        static_cast<std::string>("con"), static_cast<std::string>("dog"),
+        static_cast<std::string>("zzz")};
 
     REQUIRE(lexicon.size() > 1);
 
     WHEN("giving word with no neighbours") {
-      auto got = GetNeighbours(lexicon, "zzz");
+      auto got = GetNeighbours(lexicon, static_cast<std::string>("zzz"));
       THEN("returns an empty set") { REQUIRE(got.empty()); }
     }
 
     WHEN("giving word with neighbours") {
-      auto got = GetNeighbours(lexicon, "cat");
+      auto got = GetNeighbours(lexicon, static_cast<std::string>("cat"));
       THEN("return only elements in lexicon") {
         REQUIRE(!got.empty());
         REQUIRE(SetInLexicon(lexicon, got));
@@ -80,7 +73,8 @@ SCENARIO("WordLadder works correctly", "[WordLadder]") {
 
     WHEN("con -> cat") {
       THEN("there should be 2 valid ladders of size 3") {
-        auto got = WordLadder(lexicon, "con", "cat");
+        auto got =
+            WordLadder(lexicon, static_cast<std::string>("con"), static_cast<std::string>("cat"));
 
         REQUIRE(SetInLexicon(lexicon, got));
         REQUIRE(got.size() == 2);
@@ -91,7 +85,8 @@ SCENARIO("WordLadder works correctly", "[WordLadder]") {
 
     WHEN("cat -> dog") {
       THEN("there should be 2 valid ladders of size 4") {
-        auto got = WordLadder(lexicon, "cat", "dog");
+        auto got =
+            WordLadder(lexicon, static_cast<std::string>("dog"), static_cast<std::string>("cat"));
 
         REQUIRE(SetInLexicon(lexicon, got));
         REQUIRE(got.size() == 2);
@@ -102,7 +97,8 @@ SCENARIO("WordLadder works correctly", "[WordLadder]") {
 
     WHEN("bean -> make") {
       THEN("there should be 19 valid ladders of size 7") {
-        auto got = WordLadder(lexicon, "bean", "make");
+        auto got =
+            WordLadder(lexicon, static_cast<std::string>("bean"), static_cast<std::string>("make"));
 
         REQUIRE(SetInLexicon(lexicon, got));
         REQUIRE(got.size() == 19);
